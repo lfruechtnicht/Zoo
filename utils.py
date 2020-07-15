@@ -25,3 +25,7 @@ def money_gamble():
     else:
         print("Lame!!!")
         return None
+
+
+def sneak_in():
+    pass
