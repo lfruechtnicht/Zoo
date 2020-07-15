@@ -11,6 +11,9 @@ class Me(object):
         self.park_location = 0
         self.animals = animals
 
+    def __str__(self):
+        return 'Morten'
+
     def change_location(self):
         """Change the location of Me to one of 'Entrance', 'Shop', 'Park'."""
         response = input("Would you like to go to the Entrance, the Shop or the Park?")
@@ -23,7 +26,7 @@ class Me(object):
         """Drink a beer."""
         self.beers -= 1
         if self.beers < 0:
-            print("Ooops, you ran out of beers, quick go to the shop!")
+            print("Ops, you ran out of beers, quick go to the shop!")
             self.beers = 0
         else:
             print(beer)
@@ -40,8 +43,11 @@ class Me(object):
                 response = input(f"Please enter one of {self.food_bag.keys()}:")
             print(f"Fed the {self.animals[self.park_location]}  with {response}.")
 
+    def _view_animal(self):
+        print(repr(self.animals[self.park_location]))
+
     def view_animal(self):
-        pass
+        self._view_animal()
 
     def walk_park(self):
         """Walk to the next animal in the park."""
@@ -52,21 +58,25 @@ class Me(object):
             try:
                 self.park_location += 1
                 print(f"You´ve arrived at the {self.animals[self.park_location]}.")
+                print("\n\n")
+                self._view_animal()
             except IndexError:
                 self.park_location -= 1
                 print("done")
         else:
             try:
-                self.park_location += 1
+                self.park_location -= 1
                 print(f"You went back to the {self.animals[self.park_location]}.")
+                print("\n\n")
+                self._view_animal()
             except IndexError:
                 print("done")
                 self.park_location += 1
 
 
-
-
 if __name__ == '__main__':
     me = Me()
+    print(me)
     me.walk_park()
     me.walk_park()
+
