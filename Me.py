@@ -12,10 +12,11 @@ class Me(object):
         """
         self.money = 0 if money is None else money
         self.food_bag = {"Bananas": 5}
-        self.beers = 0
+        self.beers = 2
         self.location = "Shop"
         self.park_location = 0
         self.animals = animals
+        self.alcohol_level = 0
 
     def __str__(self):
         return 'Morten'
@@ -28,14 +29,16 @@ class Me(object):
         print(f'leaving to the {response}..')
         self.location = response
 
-    def drink_beer(self):
+    def drink_beer(self, number_of_beers=1):
         """Drink a beer."""
-        self.beers -= 1
+        self.beers -= number_of_beers
         if self.beers < 0:
             print("Ops, you ran out of beers, quick go to the shop!")
-            self.beers = 0
+            self.beers += number_of_beers
         else:
-            print(beer)
+            self.alcohol_level += 0.3*number_of_beers
+            for _beer in range(number_of_beers):
+                print(beer)
 
     def feed(self):
         """Feed one food item from the food."""
@@ -50,9 +53,11 @@ class Me(object):
             print(f"Fed the {self.animals[self.park_location]}  with {response}.")
 
     def _view_animal(self):
+        """view the representation of the animal inplace"""
         print(repr(self.animals[self.park_location]))
 
     def view_animal(self):
+        """view the representation of the animal inplace"""
         self._view_animal()
 
     def walk_park(self):
@@ -81,7 +86,7 @@ class Me(object):
 
     def how_much_money_do_I_have(self):
         """:returns how much money you have."""
-        return self.money
+        print(self.money)
 
     def buy_beers(self):
         if self.location == "Shop":
@@ -103,8 +108,12 @@ class Me(object):
 
 
 
+
+
+
+
 if __name__ == '__main__':
     me = Me()
-
+    me.drink_beer(2)
     me.buy_beers()
 
