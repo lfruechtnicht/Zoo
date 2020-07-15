@@ -59,8 +59,64 @@ def sneak_in():
 
     if delta in range(20, 26):
         print("You managed to sneak in.")
+        input()
+        return True
     
     else:
         print("BUSTED!!! You got caught by the guard. You are not going to the Zoo today.")
+        exit()
 
+
+def response_function(response, gamble=False, sneak=False, buy=False):
+    gamble_words = ["gamble", "get money", "play", "money"]
+    sneak_words = ["sneak in", "sneak"]
+    buy_words = ["buy", "ticket"]
+
+    corpus = []
+
+    if gamble:
+        corpus.extend(gamble_words)
     
+    if sneak:
+        corpus.extend(sneak_words)
+    
+    if buy:
+        corpus.extend(buy_words)
+
+    while response.lower() not in corpus:
+        response = input("I don't understand. Please repeat: ")
+
+    if response.lower() in gamble_words:
+        return "gamble"
+
+    elif response.lower() in sneak_words:
+        return "sneak"
+    
+    elif response.lower() in buy_words:
+        return "buy"
+
+
+def entrance(money):
+    # entrance point
+    input("ENTRANCE: tickets for sale!")
+    response = input("Do you want to [B]uy a ticket for 50€ or try to sneak in: ")
+
+    response = response_function(response, buy=True, sneak=True)
+
+    if response == "buy":
+        if money < 50:
+            response = input("You don't have enough money. You could try to sneak in or gamble for money. What's your choice?")
+            response = response_function(response, gamble=True, sneak=True) 
+            
+            if response == "sneak":
+                sneak_in()
+
+            elif response == "gamble":
+                money = money_gamble()
+                entrance(money)
+        else:
+            money -= 50
+            return money
+    
+    elif response == "sneak":
+        sneak_in()
