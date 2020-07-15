@@ -2,14 +2,24 @@ from ascii_me import beer
 
 
 class Me(object):
+    """ """
 
-    def __init__(self, *, animals=['Monkeys', 'Lions'], money=None):
+    def __init__(self, *, animals=['Monkeys', 'Lions'], money=3):
+        """
+
+        :param animals:
+        :param money:
+        """
         self.money = 0 if money is None else money
         self.food_bag = {"Bananas": 5}
-        self.beers = 0
-        self.location = "Entrance"
+        self.beers = 2
+        self.location = "Shop"
         self.park_location = 0
         self.animals = animals
+        self.alcohol_level = 0
+
+    def __str__(self):
+        return 'Morten'
 
     def change_location(self):
         """Change the location of Me to one of 'Entrance', 'Shop', 'Park'."""
@@ -19,14 +29,16 @@ class Me(object):
         print(f'leaving to the {response}..')
         self.location = response
 
-    def drink_beer(self):
+    def drink_beer(self, number_of_beers=1):
         """Drink a beer."""
-        self.beers -= 1
+        self.beers -= number_of_beers
         if self.beers < 0:
-            print("Ooops, you ran out of beers, quick go to the shop!")
-            self.beers = 0
+            print("Ops, you ran out of beers, quick go to the shop!")
+            self.beers += number_of_beers
         else:
-            print(beer)
+            self.alcohol_level += 0.3*number_of_beers
+            for _beer in range(number_of_beers):
+                print(beer)
 
     def feed(self):
         """Feed one food item from the food."""
@@ -34,14 +46,22 @@ class Me(object):
             # if the food_bag is empty:
             print('You ran out of food! Go back to the shop to buy new animal food')
         else:
-            response = input(f'What would you like to feed the {self.animals[self.park_location]}? You currently have: '
-                             f'{self.food_bag}')
+            print('You currently have:\n')
+            for k, v in self.food_bag.items():
+                print("{:<8} {:<10}".format(v,k))
+            print("\n")
+            response = input(f'What would you like to feed the {self.animals[self.park_location]}?')
             while response not in self.food_bag.keys():
-                response = input(f"Please enter one of {self.food_bag.keys()}:")
-            print(f"Fed the {self.animals[self.park_location]}  with {response}.")
+                response = input(f"Please enter one of:B {' '.join(list(self.food_bag.keys()))}:")
+            print(f"The {self.animals[self.park_location]} are eating your {response}.")
+
+    def _view_animal(self):
+        """View the representation of the animal inplace"""
+        print(repr(self.animals[self.park_location]))
 
     def view_animal(self):
-        pass
+        """View the representation of the animal inplace"""
+        self._view_animal()
 
     def walk_park(self):
         """Walk to the next animal in the park."""
@@ -52,21 +72,74 @@ class Me(object):
             try:
                 self.park_location += 1
                 print(f"You´ve arrived at the {self.animals[self.park_location]}.")
+                print("\n\n")
+                self._view_animal()
             except IndexError:
                 self.park_location -= 1
                 print("done")
         else:
             try:
-                self.park_location += 1
+                self.park_location -= 1
                 print(f"You went back to the {self.animals[self.park_location]}.")
+                print("\n\n")
+                self._view_animal()
             except IndexError:
                 print("done")
                 self.park_location += 1
+
+    def how_much_money_do_I_have(self):
+        """:returns how much money you have."""
+        print(self.money)
+
+    def buy_beers(self):
+        """Buy beer with money."""
+        if self.location == "Shop":
+            response = input("How many beers do you want to buy?")
+            while response not in ["1","2","3","4","5","6","7","8","9",'all of them']:
+                response = input("Please specify the number of beers")
+            if response == 'all of them':
+                # little cheat
+                self.beers += 10
+            else:
+                money = self.money - int(response)
+                if money >= 0:
+                    self.beers += int(response)
+                    self.money = money
+                else:
+                    print("You idiot don't have enough money for that many beers!")
+        else:
+            print('Your are not at the Shop and the monkey might pee on you but you can\' find beer here.')
+
+    def buy_animal_food(self):
+        """Buy animal food with money."""
+        if self.location == "Shop":
+            response = input("How many bananas do you want to buy?")
+            while response not in ["1","2","3","4","5","6","7","8","9"]:
+                response = input("Please specify the number of beers")
+            money = self.money - int(response)
+            if money >= 0:
+                self.food_bag['Bananas'] += int(response)
+                self.money = money
+                print(f'You now got {response} more bananas than before, be careful not to drop one - you might slip!')
+            else:
+                print("You idiot apparently spent all your money on beers! You can\'t buy animal food anymore - "
+                      "better go gambling!")
+        else:
+            print('Your are not at the Shop right now, hard to find animal food here.')
+
+    def sober_up(self):
+        """Sober up!"""
+        self.alcohol_level -= 0.1
+
+
+
 
 
 
 
 if __name__ == '__main__':
     me = Me()
-    me.walk_park()
-    me.walk_park()
+    me.drink_beer(2)
+    me.buy_animal_food()
+    me.feed()
+
