@@ -1,5 +1,5 @@
 class Animal:
-"""
+    """
     A class used to represent an Animal
 
     ...
@@ -14,8 +14,9 @@ class Animal:
     Methods
     -------
     """
+    
     def __init__(self, name, representation):
-       """
+        """
         Parameters
         ----------
         name : str
@@ -23,5 +24,9 @@ class Animal:
         representation : ascii str
             An image of the animal in ascii art
         """
+
         self.name = name
         self.representation = representation
+
+    def __str__(self):
+        return self.representation
