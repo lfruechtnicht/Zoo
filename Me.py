@@ -2,12 +2,18 @@ from ascii_me import beer
 
 
 class Me(object):
+    """ """
 
     def __init__(self, *, animals=['Monkeys', 'Lions'], money=None):
+        """
+
+        :param animals:
+        :param money:
+        """
         self.money = 0 if money is None else money
         self.food_bag = {"Bananas": 5}
         self.beers = 0
-        self.location = "Entrance"
+        self.location = "Shop"
         self.park_location = 0
         self.animals = animals
 
@@ -73,10 +79,32 @@ class Me(object):
                 print("done")
                 self.park_location += 1
 
+    def how_much_money_do_I_have(self):
+        """:returns how much money you have."""
+        return self.money
+
+    def buy_beers(self):
+        if self.location == "Shop":
+            response = input("How many beers do you want to buy?")
+            while response not in ["1","2","3","4","5","6","7","8","9",'all of them']:
+                response = input("Please specify the number of beers")
+            if response == 'all of them':
+                # little cheat
+                self.beers += 10
+            else:
+                money = self.money - int(response)
+                if money >= 0:
+                    self.beers += int(response)
+                    self.money = money
+                else:
+                    print("You idiot don't have enough money for that many beers!")
+        else:
+            print('Your are not at the Shop and the monkey might pee on you but you can\' find beer here.')
+
+
 
 if __name__ == '__main__':
     me = Me()
-    print(me)
-    me.walk_park()
-    me.walk_park()
+
+    me.buy_beers()
 
