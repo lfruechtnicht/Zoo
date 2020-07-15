@@ -53,11 +53,11 @@ class Me(object):
             print(f"Fed the {self.animals[self.park_location]}  with {response}.")
 
     def _view_animal(self):
-        """view the representation of the animal inplace"""
+        """View the representation of the animal inplace"""
         print(repr(self.animals[self.park_location]))
 
     def view_animal(self):
-        """view the representation of the animal inplace"""
+        """View the representation of the animal inplace"""
         self._view_animal()
 
     def walk_park(self):
@@ -89,6 +89,7 @@ class Me(object):
         print(self.money)
 
     def buy_beers(self):
+        """Buy beer with money."""
         if self.location == "Shop":
             response = input("How many beers do you want to buy?")
             while response not in ["1","2","3","4","5","6","7","8","9",'all of them']:
@@ -106,6 +107,22 @@ class Me(object):
         else:
             print('Your are not at the Shop and the monkey might pee on you but you can\' find beer here.')
 
+    def buy_animal_food(self):
+        """Buy animal food with money."""
+        if self.location == "Shop":
+            response = input("How many bananas do you want to buy?")
+            while response not in ["1","2","3","4","5","6","7","8","9"]:
+                response = input("Please specify the number of beers")
+            money = self.money - int(response)
+            if money >= 0:
+                self.food_bag['Bananas'] += int(response)
+                self.money = money
+            else:
+                print("You idiot apparently spent all your money on beers! You can\'t buy animal food anymore - "
+                      "better go gambling!")
+        else:
+            print('Your are not at the Shop right now, hard to find animal food here.')
+
 
 
 
@@ -115,5 +132,5 @@ class Me(object):
 if __name__ == '__main__':
     me = Me()
     me.drink_beer(2)
-    me.buy_beers()
+    me.buy_animal_food()
 
