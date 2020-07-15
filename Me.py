@@ -4,7 +4,7 @@ from ascii_me import beer
 class Me(object):
     """ """
 
-    def __init__(self, *, animals=['Monkeys', 'Lions'], money=None):
+    def __init__(self, *, animals=['Monkeys', 'Lions'], money=3):
         """
 
         :param animals:
@@ -46,11 +46,14 @@ class Me(object):
             # if the food_bag is empty:
             print('You ran out of food! Go back to the shop to buy new animal food')
         else:
-            response = input(f'What would you like to feed the {self.animals[self.park_location]}? You currently have: '
-                             f'{self.food_bag}')
+            print('You currently have:\n')
+            for k, v in self.food_bag.items():
+                print("{:<8} {:<10}".format(v,k))
+            print("\n")
+            response = input(f'What would you like to feed the {self.animals[self.park_location]}?')
             while response not in self.food_bag.keys():
-                response = input(f"Please enter one of {self.food_bag.keys()}:")
-            print(f"Fed the {self.animals[self.park_location]}  with {response}.")
+                response = input(f"Please enter one of:B {' '.join(list(self.food_bag.keys()))}:")
+            print(f"The {self.animals[self.park_location]} are eating your {response}.")
 
     def _view_animal(self):
         """View the representation of the animal inplace"""
@@ -117,11 +120,16 @@ class Me(object):
             if money >= 0:
                 self.food_bag['Bananas'] += int(response)
                 self.money = money
+                print(f'You now got {response} more bananas than before, be careful not to drop one - you might slip!')
             else:
                 print("You idiot apparently spent all your money on beers! You can\'t buy animal food anymore - "
                       "better go gambling!")
         else:
             print('Your are not at the Shop right now, hard to find animal food here.')
+
+    def sober_up(self):
+        """Sober up!"""
+        self.alcohol_level -= 0.1
 
 
 
@@ -133,4 +141,5 @@ if __name__ == '__main__':
     me = Me()
     me.drink_beer(2)
     me.buy_animal_food()
+    me.feed()
 
